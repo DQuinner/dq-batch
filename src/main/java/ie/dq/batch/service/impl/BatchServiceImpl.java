@@ -2,7 +2,7 @@ package ie.dq.batch.service.impl;
 
 import ie.dq.batch.api.vm.JobSummary;
 import ie.dq.batch.service.BatchService;
-import ie.dq.batch.util.BatchMetaDataMapper;
+import ie.dq.batch.util.BatchMetaDataStringUtils;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.launch.JobOperator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,10 +42,10 @@ public class BatchServiceImpl implements BatchService {
         jobSummary.setJobId(jobId);
         try {
             String jobExecution = jobOperator.getSummary(jobId);
-            jobSummary.setJobName(BatchMetaDataMapper.getJobName(jobExecution));
-            jobSummary.setJobParameters(BatchMetaDataMapper.getJobParams(jobExecution));
-            jobSummary.setJobExecution(BatchMetaDataMapper.mapJobExecutionString(jobExecution));
-            jobSummary.setStepExecutions(BatchMetaDataMapper.mapStepExecutions(jobOperator.getStepExecutionSummaries(jobId)));
+            jobSummary.setJobName(BatchMetaDataStringUtils.getJobName(jobExecution));
+            jobSummary.setJobParameters(BatchMetaDataStringUtils.getJobParams(jobExecution));
+            jobSummary.setJobExecution(BatchMetaDataStringUtils.mapJobExecutionString(jobExecution));
+            jobSummary.setStepExecutions(BatchMetaDataStringUtils.mapStepExecutions(jobOperator.getStepExecutionSummaries(jobId)));
         }catch (Exception e){
             jobSummary.setJobName(e.getMessage());
         }
